@@ -1,0 +1,6 @@
+{
+  "name": "AI Study Buddy",
+  "description": "An AI-powered mobile study companion that helps students study smarter with real-time tutoring, interactive quizzes, flashcards, document summaries, OCR note scanning, and personalized study schedules.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
