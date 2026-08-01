@@ -78,7 +78,7 @@ Do not share any developer internals. Make your response helpful and highly moti
 console.log("🚀 Sending request to Gemini...");
     const response = await client.models.generateContent({
       
-      model: "gemini-3.6-flash",
+     model: MODEL,
       contents: [...chatHistory, { role: 'user', parts: [{ text: message }] }],
       config: {
         systemInstruction,
@@ -116,7 +116,7 @@ ${content}
 Extract structural components precisely according to the JSON schema. Ensure important terms, mathematical definitions, or scientific principles are defined separately. Providing actionable tips for examinations is a core requirement.`;
 
    const response = await client.models.generateContent({
-  model: "gemini-3.6-flash",
+model: MODEL,
   contents: prompt,
   config: {
     systemInstruction:
@@ -151,7 +151,7 @@ Allowed formats: ${types && types.length > 0 ? types.join(', ') : 'Multiple Choi
 Follow the schema output strictly. Ensure each question has clear answers, reasonable distractor options for MCQs, and highly educational, student-friendly step-by-step explanations for why the answer is correct.`;
 
     const response = await client.models.generateContent({
-     model: "gemini-3.6-flash",
+     model: MODEL,
       contents: prompt,
       config: {
         systemInstruction: 'You are an expert curriculum and exam developer. Produce precise academic questions with accurate keys and thorough explanatory feedback.',
@@ -210,7 +210,7 @@ Quantity requested: ${quantity || 8}
 Formulate bite-sized Questions (front of the card) and clear, concise Answers (back of the card) optimized for spaced repetition learning. Make them engaging and quick to review.`;
 
     const response = await client.models.generateContent({
-     model: "gemini-3.6-flash",
+    model: MODEL,
       contents: prompt,
       config: {
         systemInstruction: 'You are an expert at designing spaced repetition flashcards for rapid student retention.',
@@ -257,7 +257,7 @@ app.post('/api/gemini/planner', async (req: Request, res: Response) => {
 Construct a detailed weekly rhythm with daily study tasks, recommended activities, and expert exam planning advice.`;
 
     const response = await client.models.generateContent({
-      model: "gemini-3.6-flash",
+      model: MODEL,
       contents: prompt,
       config: {
         systemInstruction: 'You are a highly efficient academic mentor and study scheduler.',
@@ -332,7 +332,7 @@ Output both the full extracted raw transcription text and structural insights in
     };
 
     const response = await client.models.generateContent({
-      model: "gemini-3.6-flash",
+model: MODEL,
       contents: { parts: [imagePart, textPart] },
       config: {
         systemInstruction: 'You are an advanced handwriting and book text OCR scanner built to extract neat, editable markdown study notes from camera captures.',
@@ -368,32 +368,7 @@ Output both the full extracted raw transcription text and structural insights in
     handleError(res, error, 'OCR Note Scanner');
   }
 });
-
-// Integrating Vite for Development or Static Files for Production
-async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-    console.log('Vite middleware mounted in development mode.');
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    // SPA catch-all routing
-    app.get('*', (req: Request, res: Response) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-    console.log('Serving production build static assets from dist.');
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`AI Study Buddy server running on http://localhost:${PORT}`);
-  });
-}
 // 7. OCR AI STUDY ANALYZER
-
 console.log("✅ STUDY ROUTE REGISTERED");
 
 app.post('/api/gemini/study', async (req: Request, res: Response) => {
@@ -403,16 +378,12 @@ app.post('/api/gemini/study', async (req: Request, res: Response) => {
     const { text } = req.body;
 
     const client = getAIClient();
-    try {
-  const models = await client.models.list();
-  console.log("AVAILABLE MODELS:");
-  console.log(models);
-} catch (e) {
-  console.error("Cannot list models:", e);
-}
+    
+
+
 
     const response = await client.models.generateContent({
-     model: "gemini-3.6-flash",
+    model: MODEL,
       contents: `
 You are an expert teacher.
 
@@ -479,6 +450,29 @@ res.json(JSON.parse(jsonText));
     handleError(res, error, "Study AI");
   }
 });
+// Integrating Vite for Development or Static Files for Production
+async function startServer() {
+  if (process.env.NODE_ENV !== 'production') {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: 'spa',
+    });
+    app.use(vite.middlewares);
+    console.log('Vite middleware mounted in development mode.');
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    // SPA catch-all routing
+    app.get('*', (req: Request, res: Response) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+    console.log('Serving production build static assets from dist.');
+  }
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`AI Study Buddy server running on http://localhost:${PORT}`);
+  });
+}
 
 
 startServer();
