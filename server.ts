@@ -8,7 +8,7 @@ dotenv.config({ path: ".env.local" });
 
 const app = express();
 const PORT = 3000;
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-2.5-flash";
 // Increase request body size limits for image uploads (OCR note scanner)
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));

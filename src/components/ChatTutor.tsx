@@ -172,16 +172,21 @@ if (auth.currentUser) {
         createdAt: serverTimestamp()
       }
     );
-
-
-    const aiMessage: Message = {
+ const aiMessage: Message = {
       role: "model",
       text: data.text,
       id: chatRef.id,
       bookmarked: false
     };
-setMessages(prev => [...prev, aiMessage]);
 
+
+    setMessages(prev => [
+      ...prev,
+      aiMessage
+    ]);
+
+
+    
   } catch (firestoreError) {
     console.error("Failed to save chat:", firestoreError);
   }
