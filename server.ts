@@ -8,7 +8,7 @@ dotenv.config({ path: ".env.local" });
 
 const app = express();
 const PORT = 3000;
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-flash-latest-lite";
 // Increase request body size limits for image uploads (OCR note scanner)
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -16,6 +16,8 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // Initialize Gemini API Client
 let ai: GoogleGenAI | null = null;
 const apiKey = process.env.GEMINI_API_KEY;
+console.log("API Key Prefix:", apiKey?.substring(0, 12));
+console.log("API Key prefix:", apiKey?.substring(0, 10));
 console.log("API Key loaded:", process.env.GEMINI_API_KEY ? "YES" : "NO");
 
 if (apiKey) {
@@ -36,9 +38,11 @@ function getAIClient(): GoogleGenAI {
 }
 
 // API Route: Healthcheck
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (req, res) => {
   res.json({
-    status: 'ok',
+    status: "ok",
+    version: "Build 5 August 2026",
+    model: MODEL,
     geminiConfigured: !!apiKey,
     time: new Date().toISOString()
   });
@@ -94,7 +98,13 @@ console.log(response.text);
     console.error("FULL ERROR:");
 console.dir(error, { depth: null });
 
-handleError(res, error, "AI Chat Tutor");
+console.error("Gemini Error:");
+console.dir(error, { depth: null });
+
+res.status(500).json({
+  message: error?.message,
+  error,
+});
   }
 });
 
