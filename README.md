@@ -67,6 +67,7 @@ An AI-powered study assistant built with **React, TypeScript, Firebase, and Goog
 
 ![Sign In](screenshots/Signin1.png)
 
+---
 
 ### 🏠 Home Dashboard
 
@@ -108,7 +109,7 @@ An AI-powered study assistant built with **React, TypeScript, Firebase, and Goog
 
 | Scanner | Extracted Text |
 |---------|----------------|
-| ![OCR](screenshots/OCRScanner.png) | ![OCR Result](screenshots/OCRScanner1.png) |
+| ![OCR Scanner](screenshots/OCRScanner.png) | ![OCR Result](screenshots/OCRScanner1.png) |
 
 ---
 
@@ -124,11 +125,9 @@ An AI-powered study assistant built with **React, TypeScript, Firebase, and Goog
 |----------|-----------------|
 | ![Subjects](screenshots/Subjects.png) | ![Subject Details](screenshots/Subjects1.png) |
 
+
+
 ---
-
-
-
-
 ## 📂 Project Structure
 
 ```text
